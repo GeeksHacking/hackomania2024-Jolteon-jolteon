@@ -75,7 +75,8 @@ def redirectCallback():
     session = session_data.get(sessionId)
 
     if not session:
-        return redirect(f"{os.getenv("FRONTEND_URI")}/error")
+        return
+        # return redirect(f"{os.g}etenv("FRONTEND_URI")/error")
     
     sub, access_token = SGID_client.callback(
         code=auth_code, 
