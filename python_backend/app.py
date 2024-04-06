@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
 import random
+import json
 
 
 from handlers.langchainHandler import tavilySearchAgent
@@ -134,7 +135,7 @@ def logout():
 
 @app.route("/message", methods=["POST"])
 def messageHandler():
-    data = request.json()
+    data = json.loads(request)
 
     response = tavilySearchAgent(data["message"])
 
