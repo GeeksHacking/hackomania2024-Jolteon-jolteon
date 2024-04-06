@@ -114,21 +114,20 @@ export default {
                 },
                 {
                     user: "bot",
-                    message: "This is a Form!",
+                    message: "Energy Efficiency Grant Application",
                     type: "FORM",
                     data: [
                         {
                             field: "TEXT",
-                            question: "Lorem Ipsum Dolor?",
+                            question: "Name",
                             choices: null
                         },
                         {
                             field: "SELECT",
-                            question: "Lorem Ipsum Dolor Select?",
+                            question: "Nationality",
                             choices: [
-                                "Choice 1",
-                                "Choice 2",
-                                "Choice 3"
+                                "Singapore Citizen/PR",
+                                "Non-Singapore Citizen"
                             ]
                         },
                     ]
