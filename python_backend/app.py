@@ -4,6 +4,7 @@ from flask import (
     make_response,
     redirect,
     abort,
+    jsonify
 )
 from flask_cors import CORS
 import os
@@ -37,6 +38,7 @@ def createClient():
     )
 
 # SGID_client = createClient()
+
 
 @app.route("/")
 def hello_world():
@@ -133,10 +135,13 @@ def logout():
 @app.route("/message", methods=["POST"])
 def messageHandler():
     data = request.json
-    iframeBool = bool(random.getrandbits(1))
     print(data)
     return {
         "statusCode": 200,
         "message": f"Message received: {data['message']}",
-        "iframe": False
+        "iframe": bool(random.getrandbits(1))
     }
+
+
+
+
