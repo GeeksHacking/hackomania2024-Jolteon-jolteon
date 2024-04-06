@@ -5,16 +5,11 @@ from vertexai.preview.generative_models import GenerativeModel, Part
 import vertexai.preview.generative_models as generative_models
 
 
-vertexai.init(project="rising-precinct-303719", location="us-central1")
-model = GenerativeModel("gemini-1.0-pro-vision-001")
-chat = model.start_chat(history=[])
-
-
 # TODO: Adjust the inputs to integrate and allow JS front-end to pass inputs
-def generate(user_input):
+def generate(user_input, chat_session):
     '''
     '''
-    responses = chat.send_message(
+    responses = chat_session.send_message(
     content=user_input,
     generation_config={
         "max_output_tokens": 2048,
@@ -35,6 +30,10 @@ def generate(user_input):
 # Save chat history to db, read user chat history to get context
 
 if __name__ == '__main__':
+    vertexai.init(project="rising-precinct-303719", location="us-central1")
+    model = GenerativeModel("gemini-1.0-pro-vision-001")
+    chat_session = model.start_chat(history=[])
+
     print('Sample chat session')
-    print(generate('Who is Lee Hsien Loong\'s father?'))
-    print(generate('Follow-up from previous response: What is said father\'s achievements?'))
+    print(generate('Who is Lee Hsien Loong\'s father?', chat_session=chat_session))
+    print(generate('Follow-up from previous response: What is said father\'s achievements?', chat_session=chat_session))
