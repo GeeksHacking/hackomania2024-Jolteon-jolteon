@@ -1,4 +1,3 @@
-import { useState } from "react";
 import axios from "axios";
 export default function SendMessageBar(props) {
 
@@ -16,14 +15,13 @@ export default function SendMessageBar(props) {
 		const message = axios.post("http://127.0.0.1:8081/message", {
 			message: newMessage,
 		});
-		setResponse(message.data)
-		
+		setResponse(message.data)	
 	}
 
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className="fixed right-0 bottom-0 left-0 flex flex-row mx-4 mb-8 shadow-[0px_3px_27px_-1px_rgba(0,0,0,0.42)] rounded p-4">
+			<form onSubmit={handleSubmit} className=" flex flex-row mx-4 mb-8 shadow-[0px_3px_27px_-1px_rgba(0,0,0,0.42)] rounded p-4">
 <input type="text" placeholder="Type your message here" className="flex-1 outline-none border-none" value={newMessage} onChange={e=>setNewMessage(e.target.value)}/>				
 		<button type="submit">
 					<svg
