@@ -1,31 +1,55 @@
-const express = require('express');
+const express = require("express");
+
+const {
+    createUser
+} = require("./databaseFunctions/User");
+
+const {
+    createSession
+} = require("./databaseFunctions/Session");
+
+const {
+    getAuthURL
+} = require("./databaseFunctions/Auth");
+
+
 const app = express();
-const {getAllUsers} = require('./models/User');
+
+app.use(express.json());
+app.use(express.urlencoded())
 
 
+app.get("/", () => {
+    return {
+        statusCode: 200,
+        body: {
+            message: "Hello World"
+        }
+    }
+})
 
-// ========== ROUTES =========
+app.get("/api/auth-url", async(req, res) => {
 
-app.get("/", (req, res) => {
+    const response = await getAuthURL();
 
+    return res.status(response.statusCode).json(response.body);
+})
+
+app.get("/api/redirect", async(req, res) => {
     return res.status(200).json({
-        message: 'Welcome to the API'
+        message: "Redirected"
+    })
+})
+
+app.post("/api/message", async (req, res) => {
+    return res.status(200).json({
+        message: "Message received"
     })
 
+
 })
 
 
-app.get("/get-all-users", async (req, res) => {
-    
-        const response = await getAllUsers(req, res)
-    
-        return res.status(response.statusCode).json(response.body)
-})
-
-
-
-
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000')
-
+app.listen(8081, () => {
+    console.log("Server running on port 8081")
 })
