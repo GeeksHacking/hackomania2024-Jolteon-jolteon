@@ -6,6 +6,7 @@ export default function SendMessageBar(props) {
 		e.preventDefault();
 		if (!newMessage) return;
 		console.log(newMessage);
+
 		setMessagesArr((prev) => [
 			...prev,
 			{ message: newMessage, sender: "user", type: "text" },

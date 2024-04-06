@@ -14,11 +14,17 @@ from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
 import random
 
+
+from handlers.langchainHandler import tavilySearchAgent
+
 load_dotenv()
 
 # In-memory store for user session data
 session_data = {}
 PORT = os.getenv("PORT")
+TAVILY_API_KEY = "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"
+tavily = TavilyClient(TAVILY_API_KEY)
+
 
 app = Flask(__name__)
 
@@ -37,7 +43,7 @@ def createClient():
         redirect_uri=f"http://localhost:{PORT}/api/redirect",
     )
 
-# SGID_client = createClient()
+SGID_client = createClient()
 
 
 @app.route("/")
@@ -134,12 +140,13 @@ def logout():
 
 @app.route("/message", methods=["POST"])
 def messageHandler():
-    data = request.json
-    print(data)
+    data = request.json()
+
+    response = tavilySearchAgent(data["message"])
+
     return {
         "statusCode": 200,
-        "message": f"Message received: {data['message']}",
-        "iframe": bool(random.getrandbits(1))
+        "data": response
     }
 
 
