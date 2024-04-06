@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import Forms from "./Forms";
 
 export default function MessagesContainer(props) {
 	let { messagesArr } = props;
@@ -15,6 +16,8 @@ export default function MessagesContainer(props) {
 			{
 				scrollToBottom();
 			},[messagesArr]);
+
+	
 
 	return (
 		<div
@@ -43,6 +46,8 @@ export default function MessagesContainer(props) {
 					</div>
 				)
 			)}
+		{/* <Forms/> */}
+
 		</div>
 	);
 }
