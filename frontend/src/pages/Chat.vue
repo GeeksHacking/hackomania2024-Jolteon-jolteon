@@ -94,16 +94,16 @@ export default {
                     type: "EXPANSION",
                     data: [
                         {
-                            header: "New Enterprise Scheme",
-                            value: "lorem Ipsum Dolor"
+                            header: "Energy Efficiency Grant",
+                            value: "The Energy Efficiency Grant (EEG) aims to support businesses in their sustainability journey by co-funding investment in energy-efficient (EE) equipment. The EEG will provide two tiers of support – a Base Tier to provide support for pre-approved EE equipment up to a $30,000 cap; and an Advanced Tier to support companies that wish to make larger investments for greater energy efficiency."
                         },
                         {
-                            header: "New Enterprise Scheme",
-                            value: "lorem Ipsum Dolor"
+                            header: "The Enterprise Development Grant",
+                            value: "The Enterprise Development Grant (EDG) supports projects that help you upgrade, innovate, grow and transform your business. Submit your individual project proposals with details on your business plans and project outcomes to take your business further. EDG funds qualifying project costs namely third-party consultancy fees, software and equipment, and internal manpower cost."
                         },
                         {
-                            header: "New Enterprise Scheme",
-                            value: "lorem Ipsum Dolor"
+                            header: "Healthier Dining Grant",
+                            value: "The HDG is a co-funding scheme offered by HPB to support our HDP Partners in the promotion and publicity of healthier menu items. HPB will reimburse up to 80% of the qualifying costs incurred for producing in-store marketing materials and website/app amendments, up to the approved grant amount, subject to applicable terms and conditions. Visit the Home page for more information about the HDP."
                         },
                     ]
                 },
