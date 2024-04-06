@@ -37,7 +37,7 @@ def createClient():
         redirect_uri=f"http://localhost:{PORT}/api/redirect",
     )
 
-SGID_client = createClient()
+# SGID_client = createClient()
 
 
 @app.route("/")

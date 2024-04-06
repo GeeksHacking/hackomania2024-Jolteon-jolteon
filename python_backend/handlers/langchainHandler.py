@@ -127,5 +127,3 @@ def tavilySearchAgent(query):
 
     return agent_chain.run(query)
 
-
-print(tavilySearchAgent("What is the Enterprise Development Grant?"))
