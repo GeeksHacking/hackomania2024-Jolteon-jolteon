@@ -1,14 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
-export default function SendMessageBar() {
-	const [newMessage, setNewMessage] = useState("");
-	const [response, setResponse] = useState("")
+export default function SendMessageBar(props) {
+
+	let {
+		setNewMessage,
+		newMessage,
+		setResponse,
+	} = props;
+
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(newMessage);
 		setNewMessage("");
-		const message = axios.post("http://localhost:3000/messages", {
+		const message = axios.post("http://127.0.0.1:8081/message", {
 			message: newMessage,
 		});
 		setResponse(message.data)
