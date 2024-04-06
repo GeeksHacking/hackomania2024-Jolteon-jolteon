@@ -15,7 +15,6 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain.agents import initialize_agent, AgentType
 from langchain.tools.tavily_search import TavilySearchResults
-from tavily import TavilyClient
 
 # Define Constants
 output_parser = StrOutputParser()

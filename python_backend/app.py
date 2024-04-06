@@ -1,10 +1,7 @@
 from flask import (
     Flask,
     request,
-    make_response,
     redirect,
-    abort,
-    jsonify
 )
 from flask_cors import CORS
 import os
@@ -22,9 +19,6 @@ load_dotenv()
 # In-memory store for user session data
 session_data = {}
 PORT = os.getenv("PORT")
-TAVILY_API_KEY = "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"
-tavily = TavilyClient(TAVILY_API_KEY)
-
 
 app = Flask(__name__)
 
