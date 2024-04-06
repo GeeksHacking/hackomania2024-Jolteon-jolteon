@@ -62,6 +62,10 @@
                                 v-if="message.type == 'EXPANSION'"
                                 :data="message"
                             ></ExpansionBubble>
+                            <FormBubble
+                                v-if="message.type == 'FORM'"
+                                :data="message"
+                            ></FormBubble>
 
                         </v-list-item>
                     </v-card-text>
@@ -76,6 +80,7 @@
 <script>
 import TextBubble from '@/components/chatComponents/TextBubble.vue'
 import ExpansionBubble from '../components/chatComponents/ExpansionBubble.vue';
+import FormBubble from '../components/chatComponents/FormBubble.vue';
 export default {
     name: 'Chat',
     props: {
@@ -109,9 +114,26 @@ export default {
                 },
                 {
                     user: "bot",
-                    message: "Hello! How can I help you today?",
-                    type: "TEXT"
+                    message: "This is a Form!",
+                    type: "FORM",
+                    data: [
+                        {
+                            field: "TEXT",
+                            question: "Lorem Ipsum Dolor?",
+                            choices: null
+                        },
+                        {
+                            field: "SELECT",
+                            question: "Lorem Ipsum Dolor Select?",
+                            choices: [
+                                "Choice 1",
+                                "Choice 2",
+                                "Choice 3"
+                            ]
+                        },
+                    ]
                 },
+
             ],
             curr_message: ""
 
@@ -119,7 +141,8 @@ export default {
     },
     components: {
         TextBubble,
-        ExpansionBubble
+        ExpansionBubble,
+        FormBubble
     },
     methods: {
 

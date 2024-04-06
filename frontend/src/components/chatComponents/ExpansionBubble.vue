@@ -11,14 +11,20 @@
         <v-card-text>
             <v-expansion-panels
                 variant="accordion"
-                class="elevation-0"
+                flat
+                
             >
                 <v-expansion-panel
                     v-for="panel in data.data"
                     :key="panel"
+                    class=""
                 >
-                    <v-expansion-panel-title>{{ panel.header }}</v-expansion-panel-title>
-                    <v-expansion-panel-text>{{ panel.value }}</v-expansion-panel-text>
+                    <v-expansion-panel-title
+                        color="amber-lighten-3"
+                    >{{ panel.header }}</v-expansion-panel-title>
+                    <v-expansion-panel-text
+                        color="grey-lighten-3"
+                    >{{ panel.value }}</v-expansion-panel-text>
                 </v-expansion-panel>
             </v-expansion-panels>
         </v-card-text>
