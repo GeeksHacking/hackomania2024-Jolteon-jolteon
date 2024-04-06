@@ -137,7 +137,7 @@ def logout():
 @app.route("/message", methods=["POST", "OPTIONS"])
 @cross_origin()
 def messageHandler():
-    data = request.json()
+    data = json.loads(request)
 
     response = tavilySearchAgent(data["message"])
 
