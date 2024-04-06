@@ -15,11 +15,13 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain.agents import initialize_agent, AgentType
 from langchain.tools.tavily_search import TavilySearchResults
+import os
 
 # Define Constants
 output_parser = StrOutputParser()
 chat = ChatOpenAI(
     model="gpt-3.5-turbo-1106",
+    api_key=os.getenv("OPENAI_API_KEY"),
 )
 embeddings = OpenAIEmbeddings()
 text_splitter = RecursiveCharacterTextSplitter()
