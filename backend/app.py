@@ -19,7 +19,7 @@ def index():
         # user_input_image = request.files.get('prompt_image')
         # print(user_input_image)
         # user_input_text = request.form.get('prompt_text')
-        user_input_text = request.get_json()#['message']
+        user_input_text = request.get_json()['message']
         print(user_input_text)
 
         # Parse image into bytecode haiyaa
