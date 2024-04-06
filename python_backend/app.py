@@ -12,12 +12,16 @@ from dotenv import load_dotenv
 from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
 import random
+from tavily import TavilyClient
 
 load_dotenv()
 
 # In-memory store for user session data
 session_data = {}
 PORT = os.getenv("PORT")
+TAVILY_API_KEY = "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"
+tavily = TavilyClient(TAVILY_API_KEY)
+
 
 app = Flask(__name__)
 
@@ -132,8 +136,10 @@ def logout():
 
 @app.route("/message", methods=["POST"])
 def messageHandler():
-    data = request.json
-    iframeBool = bool(random.getrandbits(1))
+    data = request.json()
+    suffix = "Only search for government schemes and grants for Singapore."
+    
+
     print(data)
     return {
         "statusCode": 200,

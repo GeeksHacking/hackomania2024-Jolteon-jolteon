@@ -23,6 +23,7 @@ import os
 # define model repo id
 model_repo_id = "google/gemma-2b-it"
 os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
+TAVILY_API_KEY = "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"
 
 # setup huggingface endpoint
 llm = HuggingFaceEndpoint(
@@ -138,10 +139,9 @@ conversational_chain = ConversationalRetrievalChain.from_llm(
 )
 
 
-# print(conversational_chain({
-#     "question": "What business is eligible to apply?"
-# }))
 
-print(conversational_chain({
-    "question": "What is the maximum funding support?"
-}))
+def conversational_chain_fn(question):
+    return conversational_chain({
+        "question": question
+    })
+
