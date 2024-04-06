@@ -1,0 +1,16 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@opengovsg/sgid-client": "^2.2.0",
+    "aws-sdk": "^2.1540.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "lambda-multipart-parser": "^1.0.1",
+    "uuid": "^9.0.1"
+  }
+}
