@@ -46,7 +46,7 @@ export default function MessagesContainer(props) {
 					</div>
 				)
 			)}
-		<Forms/>
+		{/* <Forms/> */}
 
 		</div>
 	);
