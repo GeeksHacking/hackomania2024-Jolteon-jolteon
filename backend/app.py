@@ -18,8 +18,10 @@ def index():
     if request.method == 'POST':
         # user_input_image = request.files.get('prompt_image')
         # print(user_input_image)
-        # user_input_text = request.form.get('prompt_text')
-        user_input_text = request.get_json()['message']
+        if request.form.get('prompt_text'):
+            user_input_text = request.form.get('prompt_text')
+        else:
+            user_input_text = request.get_json()['message']
         print(user_input_text)
 
         # Parse image into bytecode haiyaa
@@ -29,8 +31,10 @@ def index():
         # print(user_input_image)
         # user_input_image = Part.from_data(data=user_input_image, mime_type=mime_type)
 
-
-        return generate(user_input_text, chat_session=chat_session) # render_template('text.html', response=generate(user_input_text))
+        if request.form.get('prompt_text'):
+            return render_template('text.html', response=generate(user_input_text, chat_session=chat_session))
+        else:
+            return generate(user_input_text, chat_session=chat_session) # render_template('text.html', response=generate(user_input_text))
 
     else:
         return render_template('text.html')
