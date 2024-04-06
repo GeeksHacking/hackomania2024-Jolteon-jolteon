@@ -1,44 +1,55 @@
-const httpServer = require("http").createServer();
+const express = require("express");
 
 const {
     createUser
 } = require("./databaseFunctions/User");
 
+const {
+    createSession
+} = require("./databaseFunctions/Session");
+
+const {
+    getAuthURL
+} = require("./databaseFunctions/Auth");
 
 
-const io = require("socket.io")(httpServer, {
-  // initial configuration
-    cors: {
-        origin: "http://localhost:8080",
-        methods: ["GET", "POST"],
-    },
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded())
 
 
-});
-
-io.on("connection", (socket) => {
-  
-    console.log("New client connected");
-    socket.on("createUser", async (data) => {
-        console.log("createUser event received with data: ", data);
-        try {
-            const user = await createUser(data);
-            console.log("User created: ", user);
-            socket.emit("userCreated", user);
-        } catch (error) {
-            console.error("Error creating user: ", error);
-            socket.emit("userCreated", { error: error.message });
+app.get("/", () => {
+    return {
+        statusCode: 200,
+        body: {
+            message: "Hello World"
         }
-    });
+    }
+})
+
+app.get("/api/auth-url", async(req, res) => {
+
+    const response = await getAuthURL();
+
+    return res.status(response.statusCode).json(response.body);
+})
+
+app.get("/api/redirect", async(req, res) => {
+    return res.status(200).json({
+        message: "Redirected"
+    })
+})
+
+app.post("/api/message", async (req, res) => {
+    return res.status(200).json({
+        message: "Message received"
+    })
 
 
+})
 
 
-
-
-    socket.on("disconnect", () => {
-        console.log("Client disconnected");
-    });
-});
-
-httpServer.listen(3000);
+app.listen(8081, () => {
+    console.log("Server running on port 8081")
+})

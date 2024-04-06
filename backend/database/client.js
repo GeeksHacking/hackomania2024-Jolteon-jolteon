@@ -1,7 +1,10 @@
-import {createClient} from "@supabase/supabase-js";
+// db.js
+const postgres = require('postgres')
 
-const supabaseUrl = process.env.SUPABASE_URI;
-const supabaseKey = process.env.SUPABASE_ANON_PUBLIC_KEY;
+const connectionString = process.env.POSTGRES_CONNECTION_STRING
 
-export const db_client = createClient(supabaseUrl, supabaseKey);
+
+const sql = postgres(connectionString)
+
+module.exports = sql
 
