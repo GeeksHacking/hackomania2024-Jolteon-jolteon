@@ -1,0 +1,6 @@
+flask
+flask_cors
+sgid-client
+requests
+uuid
+python-dotenv
