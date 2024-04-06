@@ -4,6 +4,7 @@ from flask import (
     make_response,
     redirect,
     abort,
+    jsonify
 )
 from flask_cors import CORS
 import os
@@ -41,6 +42,7 @@ def createClient():
     )
 
 SGID_client = createClient()
+
 
 @app.route("/")
 def hello_world():
@@ -140,11 +142,14 @@ def messageHandler():
     suffix = "Only search for government schemes and grants for Singapore."
     
 
+    data = request.json
     print(data)
     return {
         "statusCode": 200,
         "message": f"Message received: {data['message']}",
-        "iframe": False
+        "iframe": bool(random.getrandbits(1))
     }
+
+
 
 

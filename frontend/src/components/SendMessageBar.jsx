@@ -4,6 +4,7 @@ export default function SendMessageBar(props) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (!newMessage) return;
 		console.log(newMessage);
 
 		setMessagesArr((prev) => [

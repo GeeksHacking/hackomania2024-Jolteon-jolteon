@@ -19,7 +19,7 @@ export default function MessagesContainer(props) {
 	return (
 		<div
 			ref={messagesContainerRef}
-			className=" w-full h-[80%] flex-grow-0 flex flex-col overflow-y-scroll"
+			className=" w-full h-[80%] flex-grow-0 flex flex-col overflow-y-scroll scroll-smooth"
 		>
 			{messagesArr.map((message, index) =>
 				message.type === "iframe" ? (
