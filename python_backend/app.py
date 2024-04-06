@@ -36,7 +36,7 @@ def createClient():
         redirect_uri=f"http://localhost:{PORT}/api/redirect",
     )
 
-# SGID_client = createClient()
+SGID_client = createClient()
 
 @app.route("/")
 def hello_world():
@@ -140,3 +140,5 @@ def messageHandler():
         "message": f"Message received: {data['message']}",
         "iframe": False
     }
+
+
