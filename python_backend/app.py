@@ -13,7 +13,9 @@ from dotenv import load_dotenv
 from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
 import random
-from tavily import TavilyClient
+
+
+from handlers.langchainHandler import tavilySearchAgent
 
 load_dotenv()
 
@@ -139,15 +141,12 @@ def logout():
 @app.route("/message", methods=["POST"])
 def messageHandler():
     data = request.json()
-    suffix = "Only search for government schemes and grants for Singapore."
-    
 
-    data = request.json
-    print(data)
+    response = tavilySearchAgent(data["message"])
+
     return {
         "statusCode": 200,
-        "message": f"Message received: {data['message']}",
-        "iframe": bool(random.getrandbits(1))
+        "data": response
     }
 
 
