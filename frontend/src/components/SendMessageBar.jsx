@@ -1,29 +1,44 @@
 import axios from "axios";
 export default function SendMessageBar(props) {
+	let { setNewMessage, newMessage, setMessagesArr } = props;
 
-	let {
-		setNewMessage,
-		newMessage,
-		setResponse,
-	} = props;
-
-
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(newMessage);
+		setMessagesArr((prev) => [
+			...prev,
+			{ message: newMessage, sender: "user", type: "text" },
+		]);
 		setNewMessage("");
-		const message = axios.post("http://127.0.0.1:5000/message", {
+		const message = await axios.post("http://127.0.0.1:5000/message", {
 			message: newMessage,
 		});
-		setResponse(message.data)	
-	}
-
+		console.log("message", message.data.message);
+		console.log("iframe", message.data.iframe);
+		setMessagesArr((prev) => [
+			...prev,
+			{
+				message: message.data.message,
+				sender: "bot",
+				type: message.data.iframe ? "iframe" : "text",
+			},
+		]);
+	};
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className=" flex flex-row mx-4 mb-8 shadow-[0px_3px_27px_-1px_rgba(0,0,0,0.42)] rounded p-4">
-<input type="text" placeholder="Type your message here" className="flex-1 outline-none border-none" value={newMessage} onChange={e=>setNewMessage(e.target.value)}/>				
-		<button type="submit">
+			<form
+				onSubmit={handleSubmit}
+				className=" flex flex-row mx-4 mb-8 shadow-[0px_3px_27px_-1px_rgba(0,0,0,0.42)] rounded p-4"
+			>
+				<input
+					type="text"
+					placeholder="Type your message here"
+					className="flex-1 outline-none border-none"
+					value={newMessage}
+					onChange={(e) => setNewMessage(e.target.value)}
+				/>
+				<button type="submit">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"

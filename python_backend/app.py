@@ -11,6 +11,7 @@ from sgid_client import SgidClient, generate_pkce_pair
 from dotenv import load_dotenv
 from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
+import random
 
 load_dotenv()
 
@@ -75,7 +76,8 @@ def redirectCallback():
     session = session_data.get(sessionId)
 
     if not session:
-        return redirect(f"{os.getenv("FRONTEND_URI")}/error")
+        return
+        # return redirect(f"{os.g}etenv("FRONTEND_URI")/error")
     
     sub, access_token = SGID_client.callback(
         code=auth_code, 
@@ -131,8 +133,10 @@ def logout():
 @app.route("/message", methods=["POST"])
 def messageHandler():
     data = request.json
+    iframeBool = bool(random.getrandbits(1))
     print(data)
     return {
         "statusCode": 200,
         "message": f"Message received: {data['message']}",
+        "iframe": iframeBool
     }

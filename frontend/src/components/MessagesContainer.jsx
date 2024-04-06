@@ -1,10 +1,46 @@
+import { useRef, useEffect } from "react";
 
+export default function MessagesContainer(props) {
+	let { messagesArr } = props;
+	const messagesContainerRef = useRef(null);
 
-export default function MessagesContainer () {
+	const scrollToBottom = () => {
+		if (messagesContainerRef.current) {
+			messagesContainerRef.current.scrollTop =
+				messagesContainerRef.current.scrollHeight;
+		}
+	};
 
-    return (
-        <div className=" w-full flex-1 flex flex-col">
+	useEffect(() =>
+			{
+				scrollToBottom();
+			},[messagesArr]);
 
-        </div>
-    )
+	return (
+		<div
+			ref={messagesContainerRef}
+			className=" w-full h-[80%] flex-grow-0 flex flex-col overflow-y-scroll"
+		>
+			{messagesArr.map((message, index) =>
+				message.type === "iframe" ? (
+					<iframe
+						key={index}
+						src="https://www.youtube.com/embed/79cJNvrSbQY?si=4d6ouDkU8GlIeOg3&amp;controls=0"
+						className="m-4 self-start rounded"
+					/>
+				) : (
+					<div
+						key={index}
+						className={`m-4 ${
+							message.sender === "user"
+								? "bg-[#FFCE4F] rounded-bl-3xl self-end"
+								: "bg-[#FFFFFF] rounded-br-3xl self-start"
+						} p-4 rounded-t-3xl shadow-[0px_3px_27px_-1px_rgba(0,0,0,0.42)]`}
+					>
+						{message.message}
+					</div>
+				)
+			)}
+		</div>
+	);
 }
