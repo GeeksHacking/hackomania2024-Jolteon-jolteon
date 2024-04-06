@@ -1,20 +1,27 @@
 import Header from "./Header";
-import MessagesContainer from "./MessagesContainer"
+import MessagesContainer from "./MessagesContainer";
 import SendMessageBar from "./SendMessageBar";
-import { useState } from 'react'
+import { useEffect, useState } from "react";
+
+export default function Chatroom() {
+	const [newMessage, setNewMessage] = useState("");
+	const [messagesArr, setMessagesArr] = useState([])
 
 
-export default function Chatroom(){
+	useEffect(() =>
+			{
+				console.log(messagesArr)
+			},[messagesArr]);
 
-	const [newMessage, setNewMessage] = useState('')
-	const [response, setResponse] = useState("")
-  
-	
-	return(
+	return (
 		<div className="flex flex-col h-dvh">
-			<Header/>
-			<MessagesContainer/>
-<SendMessageBar newMessage={newMessage} setNewMessage={setNewMessage} setResponse={setResponse} />
+			<Header />
+			<MessagesContainer messagesArr={messagesArr} />
+			<SendMessageBar
+				newMessage={newMessage}
+				setNewMessage={setNewMessage}
+		setMessagesArr={setMessagesArr}
+			/>
 		</div>
-			);
+	);
 }
