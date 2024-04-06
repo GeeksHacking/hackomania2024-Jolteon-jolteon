@@ -138,5 +138,5 @@ def messageHandler():
     return {
         "statusCode": 200,
         "message": f"Message received: {data['message']}",
-        "iframe": iframeBool
+        "iframe": False
     }
