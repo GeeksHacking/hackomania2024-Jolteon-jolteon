@@ -1,0 +1,398 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: HackOMania 2024 Jolteon - Backend Resources
+
+Parameters:
+  Environment:
+    Type: String
+    Description: Environment code of deployment (dev, prod)
+    AllowedPattern: .+
+    AllowedValues:
+      - dev
+      - prod
+
+  SharedLayerArn:
+    Type: String
+    Description: Shared Layer ARN
+    AllowedPattern: .+
+
+  ApplicationUserTableName:
+    Type: String
+    Description: Name of target application user store.
+    AllowedPattern: .+
+
+  ApplicationAuthorizationTableName:
+    Type: String
+    Description: Name of target application user store.
+    AllowedPattern: .+
+
+  AppName:
+    Type: String
+    Description: Name of backend application
+    Default: jolteon
+    AllowedPattern: .+
+
+  AppRegion:
+    Type: String
+    Description: AWS Region
+    Default: ap-southeast-1
+    AllowedPattern: .+
+    AllowedValues:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - gov-west-1
+      - ca-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - ap-northeast-1
+      - ap-northeast-2
+      - sa-east-1
+      - cn-north-1
+
+  ApplicationFrontendURL:
+    Type: String
+    Description: Frontend URL for application
+    AllowedPattern: .+
+
+  ApplicationRedirectURL:
+    Type: String
+    Description: Redirect URL for application
+    AllowedPattern: .+
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    MemorySize: 128
+Resources:
+
+  # ========== Policies =================
+  ApplicationSSMParameterStorePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Join ["-", [!Ref Environment, !Ref AppName, "ssm-policy"]]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: SSMGetCredentials
+            Effect: Allow
+            Action:
+              - ssm:DescribeParameters
+              - ssm:GetParameters
+              - ssm:GetParameter
+            Resource:
+              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-${AppName}-*
+              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-${AppName}-sgid-client-id
+              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-${AppName}-sgid-private-eky
+              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-${AppName}-sgid-client-secret
+      Roles:
+        - !Ref ApplicationMainHandlerRole
+  
+  ApplicationAccessLogsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Join ["-", [!Ref Environment, !Ref AppName, "access-log-policy"]]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      Roles:
+        - !Ref ApplicationMainHandlerRole
+   
+  DynamoDBAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Join ["-", [!Ref Environment, !Ref AppName, "dynamodb-policy"]]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:GetItem
+              - dynamodb:DeleteItem
+              - dynamodb:PutItem
+              - dynamodb:Scan
+              - dynamodb:Query
+              - dynamodb:UpdateItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:BatchGetItem
+              - dynamodb:DescribeTable
+              - dynamodb:ConditionCheckItem
+            Resource:
+              - !Sub arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-${AppName}-*
+              - !Sub arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApplicationUserTableName}
+              - !Sub arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ApplicationAuthorizationTableName}
+      Roles:
+        - !Ref ApplicationMainHandlerRole
+
+ 
+  
+  LambdaInvokeAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Join ["-", [!Ref Environment, !Ref AppName, "lambda-invoke-policy"]]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: LambdaInvoke
+            Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+            Resource:
+              - !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}*
+      Roles:
+        - !Ref ApplicationMainHandlerRole
+
+
+  # ========== Roles =================
+  ApplicationMainHandlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join ["-", [!Ref Environment, !Ref AppName, "main-handler-role"]]
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      MaxSessionDuration: 3600
+      Path: /
+
+  
+  # ========== API Gateway =================
+  ApplicationAPIGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Join ["-", [!Ref Environment, !Ref AppName, "api-gateway"]]
+      Description: AWS API Gateway for SBN Infocard backend
+      StageName: !Ref Environment
+      BinaryMediaTypes:
+        - 'multipart/form-data'
+      Cors:
+        AllowOrigin: "'*'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+      
+      
+
+
+
+  # ========== Lambdas =================
+  ApplicationMainHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "main-handler"]]
+      Description: Main Backend function for SBN Infocard application
+      Timeout: 20
+      Runtime: nodejs18.x
+      MemorySize: 256
+      CodeUri: ../backend/mainHandler
+      Handler: app.mainHandler
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        MainCallbackEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /
+            Method: GET
+
+  ApplicationAuthorizationHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "authorization-handler"]]
+      Description: Authorization handler for user authorization for SBN infocard application
+      Timeout: 20
+      Runtime: nodejs18.x
+      MemorySize: 256
+      CodeUri: ../backend/authentication
+      Handler: app.getAuthURLEndpoint
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          REDIRECT_URI: !Ref ApplicationRedirectURL
+          FRONTEND_URL: !Ref ApplicationFrontendURL
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        AuthURLEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /api/auth-url
+            Method: GET
+
+  ApplicationVerifySessionIdHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "verify-session-id-handler"]]
+      Description: Verify Session ID handler for user authorization for SBN infocard application
+      Timeout: 20
+      Runtime: nodejs18.x
+      MemorySize: 256
+      CodeUri: ../backend/authentication
+      Handler: app.verifySessionId
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          REDIRECT_URI: !Ref ApplicationRedirectURL
+          FRONTEND_URL: !Ref ApplicationFrontendURL
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        VerifySessionIdEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /api/session
+            Method: GET
+  
+  ApplicationRedirectAuthorizationHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "redirect-authorization-handler"]]
+      Description: Redirect Authorization handler for user authorization for SBN infocard application
+      Timeout: 20
+      Runtime: nodejs18.x
+      MemorySize: 256
+      CodeUri: ../backend/authentication
+      Handler: app.redirectAuthURL
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          REDIRECT_URI: !Ref ApplicationRedirectURL
+          FRONTEND_URL: !Ref ApplicationFrontendURL
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        RedirectAuthURLEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /api/redirect
+            Method: GET
+
+  ApplicationGetUserInfoHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "user-info-handler"]]
+      Description: Get User Info handler for user authorization for SBN infocard application
+      Timeout: 20
+      Runtime: nodejs18.x
+      MemorySize: 256
+      CodeUri: ../backend/authentication
+      Handler: app.getUserInfo
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          REDIRECT_URI: !Ref ApplicationRedirectURL
+          FRONTEND_URL: !Ref ApplicationFrontendURL
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        GetUserInfoEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /api/userinfo
+            Method: GET
+
+
+  ApplicationGetPersonnelRegistered:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "get-personnel-registered"]]
+      Description: Get Personnel Registered handler for user authorization for SBN infocard application
+      Timeout: 20
+      Runtime: nodejs18.x
+      MemorySize: 256
+      CodeUri: ../backend/mainHandler
+      Handler: app.getUserRegistered
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          REDIRECT_URI: !Ref ApplicationRedirectURL
+          FRONTEND_URL: !Ref ApplicationFrontendURL
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        GetPersonnelRegisteredEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /api/personnel-registered
+            Method: POST
+
+  ApplicationChatHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "chat-handler"]]
+      Description: Main handler for the chat functions
+      Timeout: 20
+      Runtime: nodejs18.x
+      CodeUri: ../backend/chatHandler
+      Handler: app.mainHandler
+      Role: !GetAtt ApplicationMainHandlerRole.Arn
+      Layers:
+        - !Ref SharedLayerArn
+      Environment:
+        Variables:
+          AWS: true
+          ENV: !Ref Environment
+          APP_NAME: !Ref AppName
+          USER_TABLENAME: !Ref ApplicationUserTableName
+          REDIRECT_URI: !Ref ApplicationRedirectURL
+          FRONTEND_URL: !Ref ApplicationFrontendURL
+          AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+      Events:
+        GetPersonnelRegisteredEndpoint:
+          Type: "Api"
+          Properties:
+            RestApiId: !Ref ApplicationAPIGateway
+            Path: /api/send-message
+            Method: POST

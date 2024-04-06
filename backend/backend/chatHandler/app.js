@@ -5,7 +5,6 @@ const LIBRARY_PATH = process.env.AWS ? "/opt/nodejs" : "../layers/nodejs"
 const {
     addSession,
     getSession,
-    updateAccessToken,
     getUser,
     addUser
 } = require(`${LIBRARY_PATH}/databaseFunctions.js`)

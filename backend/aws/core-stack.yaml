@@ -1,0 +1,137 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: >
+  Jolteon - Core Resources
+
+Parameters:
+  Environment:
+    Type: String
+    Description: "Environment code of deployment (dev, prod)"
+    AllowedPattern: ".+"
+    AllowedValues:
+      - "dev"
+      - "prod"
+  AppName:
+    Type: String
+    Default: "jolteon"
+    Description: "Name of application"
+
+Resources:
+
+  SBNInfocardUsers:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Join ["-", [!Ref Environment, !Ref AppName, "users"]]
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: userUUID
+          AttributeType: S
+        - AttributeName: name
+          AttributeType: S
+        - AttributeName: phone_number
+          AttributeType: S
+        - AttributeName: created_at
+          AttributeType: N
+
+
+      KeySchema:
+        - AttributeName: userUUID
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: name
+          KeySchema:
+            - AttributeName: name
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: created_at
+          KeySchema:
+            - AttributeName: created_at
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: phone_number
+          KeySchema:
+            - AttributeName: phone_number
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+        
+
+  
+  SGIDUserAuthorization:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Join ["-", [!Ref Environment, !Ref AppName, "sgid-user-authorization"]]
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: sessionId
+          AttributeType: S
+        - AttributeName: codeChallenge
+          AttributeType: S
+        - AttributeName: codeVerifier
+          AttributeType: S
+        - AttributeName: authorizationURL
+          AttributeType: S
+        - AttributeName: authorizationNonce
+          AttributeType: S
+        - AttributeName: authorizationScopes
+          AttributeType: S
+        - AttributeName: accessToken
+          AttributeType: S
+        - AttributeName: accessTokenSub
+          AttributeType: S
+        
+      KeySchema:
+        - AttributeName: sessionId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: codeChallenge
+          KeySchema:
+            - AttributeName: codeChallenge
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: codeVerifier
+          KeySchema:
+            - AttributeName: codeVerifier
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: authorizationURL
+          KeySchema:
+            - AttributeName: authorizationURL
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: authorizationNonce
+          KeySchema:
+            - AttributeName: authorizationNonce
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: authorizationScopes
+          KeySchema:
+            - AttributeName: authorizationScopes
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: accessToken
+          KeySchema:
+            - AttributeName: accessToken
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: accessTokenSub
+          KeySchema:
+            - AttributeName: accessTokenSub
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  

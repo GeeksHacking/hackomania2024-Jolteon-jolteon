@@ -1,6 +1,5 @@
 const LIBRARY_PATH = process.env.AWS ? "/opt/nodejs" : "../layers/nodejs"
 
-
 const { generatePkcePair } = require("@opengovsg/sgid-client")
 const {generateUUID} =  require(`${LIBRARY_PATH}/utils/generateUUID.js`)
 const {triggerLambda} =  require(`${LIBRARY_PATH}/utils/triggerLambda.js`)

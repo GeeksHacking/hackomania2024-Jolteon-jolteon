@@ -129,7 +129,7 @@ fi
 
 # Package the cloudformation template for application layers deployment
 echo "Packaging..."
-sam package --template-file ./aws/layers.sam.yaml \
+sam package --template-file ./aws/layers.yaml \
     --s3-bucket $AWS_S3_ARTIFACT_STORE \
     --s3-prefix $AWS_CLOUDFORMATION_ARTIFACT_PATH \
     --region    $AWS_REGION \

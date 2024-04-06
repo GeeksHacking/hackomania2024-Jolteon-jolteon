@@ -2,10 +2,16 @@
     <v-toolbar
         color="#FFCE4F"
     >
-        <v-avatar
+        <v-btn
+            size="large"
+            variant="text"
+            :ripple="false"
+            @click="$router.push('/')"
+        >
+            <v-avatar
             size="40"
             color="white"
-            class="mx-2"
+            class="mr-2"
         >
             <v-img
                 width="40px"
@@ -13,7 +19,9 @@
                 :src="avatar"
             ></v-img>
         </v-avatar>
-        <v-toolbar-title>Jolteon</v-toolbar-title>
+            <span class="text-h6">Jolteon</span>
+        </v-btn>
+
         <v-spacer></v-spacer>
         
     </v-toolbar>

@@ -1,36 +1,32 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >-
-  AWS Serverless Application Model template for the AWS Lambda Layer. 
-  This template is responsible for creating the Lambda Layer and the
-  Lambda function that uses the layer.
-
+Description: AWS Serverless Application Model template for the AWS Lambda Layer.  This
+  template is responsible for creating the Lambda Layer and the Lambda function that
+  uses the layer.
 Parameters:
   Environment:
     Type: String
     Default: dev
     AllowedValues:
-      - dev
-      - prod
+    - dev
+    - prod
     Description: The environment to deploy the layer to.
-
   ApplicationName:
     Type: String
     Description: The name of the application.
     Default: Jolteon
-
-
 Resources:
   InfoCardSharedLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: !Sub ${Environment}-${ApplicationName}-shared-layer
+      LayerName:
+        Fn::Sub: ${Environment}-${ApplicationName}-shared-layer
       Description: Shared layer for the Jolteon application.
-      ContentUri: ../layers/
+      ContentUri: s3://dev-jolteon/cloudformation/jolteon/dev/a9c340284c05a541bcdb9ffc9c4f7be0
       CompatibleRuntimes:
-        - nodejs16.x
-        - nodejs18.x
+      - nodejs16.x
+      - nodejs18.x
       LicenseInfo: MIT
       RetentionPolicy: Retain
-
-
+    Metadata:
+      SamResourceId: InfoCardSharedLayer
