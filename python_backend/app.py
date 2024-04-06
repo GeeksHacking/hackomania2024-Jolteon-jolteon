@@ -126,3 +126,13 @@ def logout():
     del session_data[sessionId]
 
     return redirect(f"{os.getenv('FRONTEND_URI')}/")
+
+
+@app.route("/message", methods=["POST"])
+def messageHandler():
+    data = request.json
+    print(data)
+    return {
+        "statusCode": 200,
+        "message": f"Message received: {data['message']}",
+    }
