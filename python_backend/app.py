@@ -3,13 +3,15 @@ from flask import (
     request,
     redirect,
 )
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+from flask_talisman import Talisman
 import os
 from sgid_client import SgidClient, generate_pkce_pair
 from dotenv import load_dotenv
 from uuid import uuid4
 from urllib.parse import urlencode, parse_qs
 import random
+import json
 
 
 from handlers.langchainHandler import tavilySearchAgent
@@ -132,7 +134,8 @@ def logout():
     return redirect(f"{os.getenv('FRONTEND_URI')}/")
 
 
-@app.route("/message", methods=["POST"])
+@app.route("/message", methods=["POST", "OPTIONS"])
+@cross_origin()
 def messageHandler():
     data = request.json()
 
