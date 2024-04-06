@@ -12,7 +12,7 @@ export default function SendMessageBar(props) {
 		e.preventDefault();
 		console.log(newMessage);
 		setNewMessage("");
-		const message = axios.post("http://127.0.0.1:8081/message", {
+		const message = axios.post("http://127.0.0.1:5000/message", {
 			message: newMessage,
 		});
 		setResponse(message.data)	

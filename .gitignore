@@ -8,6 +8,8 @@ node_modules/
 # python
 py_cache/
 __pycache__/
-
-
+__pycache__/
+*.env
+.env
+env/
 
