@@ -89,4 +89,5 @@ export {
     getUserRegistered,
     getMyInfoUser,
     registerUser,
+    sendMessage
  }

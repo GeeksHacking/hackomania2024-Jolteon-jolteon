@@ -219,14 +219,14 @@ module.exports = {
 
         // return redirect
         return {
-            statusCode: 200,
+            statusCode: 302,
             headers: {
                 Location: `${FRONTEND_URL}/logged-in?sessionId=${sessionId}`,
                 "Access-Control-Allow-Origin": "*", // Required for CORS support to work
                 "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
             },
             body: JSON.stringify({
-                statusCode: 200,
+                statusCode: 302,
                 sessionId: sessionId,
                 message: "Session found",
             })

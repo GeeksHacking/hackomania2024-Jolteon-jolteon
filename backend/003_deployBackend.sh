@@ -111,6 +111,7 @@ verifyInstallation() {
     printListItem "BACKEND_STACK_NAME = ${BACKEND_STACK_NAME}";
     printListItem "SHARED_LAMBDA_LAYER_NAME = ${ENVIRONMENT}-${SHARED_LAMBDA_LAYER_NAME}";
     printListItem "SHARED_LAMBDA_LAYER_ARN = ${SHARED_LAMBDA_LAYER_ARN}";
+    printListItem "IMAGE_REPOSITORY_URI = ${IMAGE_REPOSITORIES}";
 
     printSeparator;
     echo -n "3). Do you want to continue? ([Y]es, [N]o): "
@@ -161,7 +162,7 @@ cd ./aws
 # Deploy
 echo "Packaging..."
 sam package --template-file backend-stack.yaml \
-    --image-repositories "${IMAGE_REPOSITORIES}" \
+    --image-repository "${IMAGE_REPOSITORIES}" \
     --s3-bucket "${ARTIFACT_STORE}" \
     --s3-prefix "${ARTIFACT_PATH}" \
     --output-template-file ./backend-stack-packaged.yaml \
@@ -186,7 +187,7 @@ sam deploy --template-file ./backend-stack-packaged.yaml \
     --s3-bucket "${ARTIFACT_STORE}" \
     --s3-prefix "${ARTIFACT_PATH}" \
     --stack-name $BACKEND_STACK_NAME \
-    --image-repositories "${IMAGE_REPOSITORIES}" \
+    --image-repository "${IMAGE_REPOSITORIES}" \
     --parameter-overrides ParameterKey=CountryCode,ParameterValue=$COUNTRY_CODE \
     ParameterKey=Environment,ParameterValue=$ENVIRONMENT \
     ParameterKey=SharedLayerArn,ParameterValue=$SHARED_LAMBDA_LAYER_ARN \

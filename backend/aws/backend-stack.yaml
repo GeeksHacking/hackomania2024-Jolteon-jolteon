@@ -152,6 +152,8 @@ Resources:
       Roles:
         - !Ref ApplicationMainHandlerRole
 
+  
+
 
   # ========== Roles =================
   ApplicationMainHandlerRole:
@@ -374,7 +376,7 @@ Resources:
       Description: Main handler for the chat functions
       Timeout: 30
       MemorySize: 2048
-      ImageUri: 353942955042.dkr.ecr.ap-southeast-1.amazonaws.com/infocardgeneration:latest
+      ImageUri: 229965290704.dkr.ecr.ap-southeast-1.amazonaws.com/jolteoncontainer:latest
       PackageType: Image
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Environment:

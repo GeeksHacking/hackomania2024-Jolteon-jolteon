@@ -58,7 +58,6 @@ Parameters:
     AllowedPattern: .+
 Globals:
   Function:
-    Runtime: nodejs18.x
     MemorySize: 128
 Resources:
   ApplicationSSMParameterStorePolicy:
@@ -217,7 +216,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/ddc810cc175c8accc90eea002a9ed406
+      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/cadf686b0f642ebc6e6b732ef3313ddb
       Handler: app.mainHandler
       Role:
         Fn::GetAtt:
@@ -446,7 +445,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/ddc810cc175c8accc90eea002a9ed406
+      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/cadf686b0f642ebc6e6b732ef3313ddb
       Handler: app.getUserRegistered
       Role:
         Fn::GetAtt:
@@ -489,16 +488,14 @@ Resources:
           - Ref: AppName
           - chat-handler
       Description: Main handler for the chat functions
-      Timeout: 20
-      Runtime: nodejs18.x
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/ddc810cc175c8accc90eea002a9ed406
-      Handler: app.mainHandler
+      Timeout: 30
+      MemorySize: 2048
+      ImageUri: 229965290704.dkr.ecr.ap-southeast-1.amazonaws.com/jolteoncontainer:latest
+      PackageType: Image
       Role:
         Fn::GetAtt:
         - ApplicationMainHandlerRole
         - Arn
-      Layers:
-      - Ref: SharedLayerArn
       Environment:
         Variables:
           AWS: true
