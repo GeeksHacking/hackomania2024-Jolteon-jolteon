@@ -3,6 +3,7 @@
 <p align="center">
   <img src="https://github.com/jednghk/jolteon/blob/main/docs/Jolteon.png?raw=true" alt="Jolteon Logo" width="200" height="200">
 </p>
+
 ## Overview
 **Jolteon** is a sophisticated chatbot designed to navigate the complexities of grants, schemes, and loans offered by the Singapore Government. Utilizing the latest in chatbot technology, Jolteon not only provides tailored advice and information, but also brings the required forms straight to you, so you don't have to navigate out of the page to fill it out!
 
