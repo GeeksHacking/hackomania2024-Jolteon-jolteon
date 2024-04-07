@@ -3,6 +3,7 @@
         :color="bubbleColor"
         width="fit-content"
         min-width="350px"
+        max-width="369px"
         height="fit-content"
         class="pa-1 rounded-xl"
         flat

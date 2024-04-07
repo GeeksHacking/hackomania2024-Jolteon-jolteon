@@ -2,6 +2,7 @@
     <v-card
         :color="bubbleColor"
         width="fit-content"
+        max-width="369px"
         height="fit-content"
         class="pa-1 rounded-xl"
         flat
@@ -21,6 +22,7 @@
                 >
                     <v-expansion-panel-title
                         color="amber-lighten-3"
+                        class="font-weight-medium"
                     >{{ panel.header }}</v-expansion-panel-title>
                     <v-expansion-panel-text
                         color="grey-lighten-3"

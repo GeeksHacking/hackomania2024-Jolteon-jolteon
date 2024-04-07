@@ -9,28 +9,39 @@
         <v-row>
             <v-col
                 cols="12"
-                md="3"
-                class="mx-auto d-flex flex-column"
+                md="12"
+                class="mx-auto d-flex"
             >
                 <v-img
                     :src="avatar"
-                    min-width="212px"
-                    min-height="212px"
+                    max-width="264px"
+                    max-height="304px"
                     contained
+                    class="mx-auto"
                 ></v-img>
+                
+            </v-col>
+            <v-col
+                cols="12"
+                class="mx-auto text-center"
+            >
                 <span 
                     class="text-center font-weight-bold"
                     :class="mobile ? 'text-h2' : 'text-h1'"
                 >Jamie 2.0</span>
             </v-col>
             <v-col
-                cols="12"
-                md="3"
+                cols="8"
+                md="2"
                 class="mx-auto"
             >
                 <v-btn
-                    width=""
-                ></v-btn>
+                    width="100%"
+                    color="red-darken-2"
+                    size="large"
+                    class="px-2 font-weight-medium"
+                    @click="loginButtonHandler"
+                >Login with Singpass</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -40,6 +51,10 @@
 <script>
 import HeroSection from '@/components/heroSection/HeroSection.vue'
 import Avatar from "@/assets/splashArt.png"
+
+import {
+    retrieveSingpassAuthUrl
+} from "@/apis/authApi"
 
 export default {
     name: 'Home',
@@ -58,7 +73,12 @@ export default {
     },
     methods: {
 
-
+        async loginButtonHandler(){
+            const response = await retrieveSingpassAuthUrl()
+            if (response.status == 200 && response.data){
+                window.location.href = response.data.url
+            }
+        }
     },
 }
 </script>

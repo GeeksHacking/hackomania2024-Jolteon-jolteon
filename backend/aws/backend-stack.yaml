@@ -197,7 +197,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: ../backend/mainHandler
+      CodeUri: ../backend/chatHandler
       Handler: app.mainHandler
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Layers:
@@ -225,7 +225,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: ../backend/authentication
+      CodeUri: ../backend/authHandler
       Handler: app.getAuthURLEndpoint
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Layers:
@@ -255,7 +255,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: ../backend/authentication
+      CodeUri: ../backend/authHandler
       Handler: app.verifySessionId
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Layers:
@@ -285,7 +285,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: ../backend/authentication
+      CodeUri: ../backend/authHandler
       Handler: app.redirectAuthURL
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Layers:
@@ -315,7 +315,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: ../backend/authentication
+      CodeUri: ../backend/authHandler
       Handler: app.getUserInfo
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Layers:
@@ -346,7 +346,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: ../backend/mainHandler
+      CodeUri: ../backend/chatHandler
       Handler: app.getUserRegistered
       Role: !GetAtt ApplicationMainHandlerRole.Arn
       Layers:

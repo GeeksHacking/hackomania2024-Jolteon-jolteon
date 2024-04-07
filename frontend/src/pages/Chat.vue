@@ -14,11 +14,12 @@
                 <v-card
                     flat
                     style="position: relative;"
+                    height="850px"
                     class="rounded-xl"
                 >   
                     <div 
                         class="d-flex mb-3 align-center"
-                        style="position: absolute; bottom: 0; width: 100%;"
+                        style="position: absolute; bottom: 0; width: 100%;z-index: 10000"
                     >
                         <v-text-field
                             v-model="curr_message"
@@ -46,7 +47,7 @@
                     </v-toolbar>
                     <v-card-text
                         class="d-flex flex-column"
-                        style="height: 750px;"
+                        style="height: 700px;"
                     >
                         <v-list-item
                             v-for="(message, index) in all_messages"
@@ -68,6 +69,7 @@
                             ></FormBubble>
 
                         </v-list-item>
+                        <v-list-item></v-list-item>
                     </v-card-text>
                     
                 </v-card>
@@ -90,12 +92,12 @@ export default {
             all_messages: [
                 {
                     user: "bot",
-                    message: "Hello! How can I help you today?",
+                    message: "Hello! I am Jamie 2.0, How may I help you today?",
                     type: "TEXT"
                 },
                 {
                     user: "bot",
-                    message: "Hello! How can I help you today?",
+                    message: "Recent Government Schemes & Grants",
                     type: "EXPANSION",
                     data: [
                         {

@@ -11,10 +11,32 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: Home },
-    { path: '/chat', component: Chat}
+    { path: '/chat', component: Chat},
+    { path: "/:pathMatch(.*)*", component: Error, },
   ],
 })
 
+
+router.beforeEach((to, from, next) => {
+
+  if (to.path === "/logged-in" && to.query.sessionId){
+    const sessionId = to.query.sessionId
+    // add sessionId to local storage
+    localStorage.setItem("sessionId", sessionId)
+
+    if (localStorage.getItem("sessionId")){
+      return next({path: "/chat", query: { sessionId: sessionId } })
+
+    }
+
+    return next("/error")
+
+
+
+  }
+  next()
+
+})
 
 
 loadFonts()

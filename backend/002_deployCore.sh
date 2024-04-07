@@ -122,7 +122,7 @@ printSeparator
 clear;
 fi
 
-STACK_NAME="${ENVIRONMENT}-sbn-infocard-core-stack";
+STACK_NAME="${ENVIRONMENT}-jolteon-core-stack";
 
 cd ./aws
 
