@@ -84,6 +84,8 @@ AWS_REGION=$(getVar AWS_REGION);
 BACKEND_STACK_NAME="${ENVIRONMENT}-jolteon-backend-stack";
 SHARED_LAMBDA_LAYER_NAME=$(getVar SHARED_LAMBDA_LAYER_NAME);
 
+IMAGE_REPOSITORIES=$(getVar IMAGE_REPOSITORIES);
+
 QUERY_LAMBDA_LAYER_NAME="${ENVIRONMENT}-${SHARED_LAMBDA_LAYER_NAME}";
 
 echo "aws lambda list-layer-versions --layer-name ${QUERY_LAMBDA_LAYER_NAME} --query 'max_by(LayerVersions, &Version).LayerVersionArn' --output text | xargs"
@@ -159,6 +161,7 @@ cd ./aws
 # Deploy
 echo "Packaging..."
 sam package --template-file backend-stack.yaml \
+    --image-repositories "${IMAGE_REPOSITORIES}" \
     --s3-bucket "${ARTIFACT_STORE}" \
     --s3-prefix "${ARTIFACT_PATH}" \
     --output-template-file ./backend-stack-packaged.yaml \
@@ -183,6 +186,7 @@ sam deploy --template-file ./backend-stack-packaged.yaml \
     --s3-bucket "${ARTIFACT_STORE}" \
     --s3-prefix "${ARTIFACT_PATH}" \
     --stack-name $BACKEND_STACK_NAME \
+    --image-repositories "${IMAGE_REPOSITORIES}" \
     --parameter-overrides ParameterKey=CountryCode,ParameterValue=$COUNTRY_CODE \
     ParameterKey=Environment,ParameterValue=$ENVIRONMENT \
     ParameterKey=SharedLayerArn,ParameterValue=$SHARED_LAMBDA_LAYER_ARN \

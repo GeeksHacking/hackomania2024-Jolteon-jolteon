@@ -36,7 +36,7 @@ printHeader() {
 
 
 s3_bucket="dev-jolteon";
-CLOUDFRONT_DISTRIBUTION_ID="";
+CLOUDFRONT_DISTRIBUTION_ID="E1GB8RCICESV1T";
 AWS_REGION="ap-southeast-1";
 filename="index.html";
 aws_cli_profile="aks";

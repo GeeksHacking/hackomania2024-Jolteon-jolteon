@@ -17,9 +17,10 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 
   if (to.path === "/logged-in" && to.query.sessionId){
+    console.log("here")
     const sessionId = to.query.sessionId
     // add sessionId to local storage
     localStorage.setItem("sessionId", sessionId)

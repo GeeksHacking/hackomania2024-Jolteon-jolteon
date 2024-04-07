@@ -80,6 +80,9 @@ const sendMessage = async (sessionId, message) => {
         message: message
     })
 
+    console.log(response)
+    return response
+
 }
 
 export { 

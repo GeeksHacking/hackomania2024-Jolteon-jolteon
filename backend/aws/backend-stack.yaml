@@ -67,7 +67,6 @@ Parameters:
 
 Globals:
   Function:
-    Runtime: nodejs18.x
     MemorySize: 128
 Resources:
 
@@ -387,7 +386,6 @@ Resources:
           REDIRECT_URI: !Ref ApplicationRedirectURL
           FRONTEND_URL: !Ref ApplicationFrontendURL
           AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
-          ApplicationPersonnelImageBucket: !Ref ApplicationPersonnelImageBucket
       Events:
         GetPersonnelRegisteredEndpoint:
           Type: "Api"

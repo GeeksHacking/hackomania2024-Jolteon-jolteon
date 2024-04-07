@@ -59,7 +59,7 @@
 <script>
 import HeroSection from '@/components/heroSection/HeroSection.vue'
 import Avatar from "@/assets/splashArt.png"
-import background from "@/assets/backgroun.jpg"
+import background from "@/assets/background.jpg"
 
 import {
     retrieveSingpassAuthUrl
