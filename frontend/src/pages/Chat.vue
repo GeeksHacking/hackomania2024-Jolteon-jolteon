@@ -63,11 +63,12 @@
                     </v-toolbar>
                     <v-card-text
                         class="d-flex flex-column"
-                        style="height: 700px;"
+                        style="height: 700px; overflow-y: scroll;"
                     >
                         <v-list-item
                             v-for="(message, index) in all_messages"
                             :key="index"
+                            ref="listItem"
                             :class="message.user == 'bot' ? 'mr-auto' : 'ml-auto'"
                         >
                             <TextBubble 
@@ -103,7 +104,8 @@ import Avatar from "@/assets/splashArt.png"
 
 
 import {
-    getMyInfoUser
+    getMyInfoUser,
+    sendMessage
 } from "@/apis/userApi"
 
 export default {
@@ -190,8 +192,26 @@ export default {
             all_messages: [],
             curr_message: "",
             username: "",
-            avatar: Avatar
+            avatar: Avatar,
+            botLoading: false
 
+        }
+    },
+    watch: {
+        boLoading(){
+            if (this.botLoading){
+                this.all_messages.push({
+                    user: "bot",
+                    message: "Please wait while I process your request...",
+                    type: "TEXT",
+                    data: null
+                })
+            }
+            else{
+                this.all_messages.pop()
+            
+            }
+            
         }
     },
     components: {
@@ -201,7 +221,9 @@ export default {
     },
     methods: {
 
-        sendMessage() {
+        async sendMessage() {
+            const sessionId = localStorage.getItem("sessionId")
+
             if (this.curr_message.length > 0){
                 this.all_messages.push({
                     user: "user",
@@ -209,8 +231,28 @@ export default {
                     type: "TEXT",
                     data: null
                 })
-            }
+                // this.botLoading = true
+                // const response = await this.sendMessage(sessionId, this.curr_message)
+                // this.botLoading = false
+                // if (response.status == 200 && response.data){
+                //     this.all_messages.push({
+                //         user: "bot",
+                //         message: response.data.message,
+                //         type: "TEXT",
+                //         data: null
+                //     })
+                // }
+                // else{
+                //     this.all_messages.push({
+                //         user: "bot",
+                //         message: "Sorry, I am unable to process your request at the moment. Please try again later.",
+                //         type: "TEXT",
+                //         data: null
+                //     })
+                
+                // }
 
+            }
             // check what's the keyword in the message
             if (this.curr_message.includes('form')){
                 const message = this.dummy_messages.find(msg => msg.type === "FORM")
@@ -221,6 +263,10 @@ export default {
             }
 
             this.curr_message = ""
+            this.$nextTick(() => {
+                const element = this.$refs.listItem[this.$refs.listItem.length - 1].$el;
+                element.scrollIntoView({ behavior: 'smooth' });
+            });
         },
         clearMessages(){
             this.curr_message = ''
