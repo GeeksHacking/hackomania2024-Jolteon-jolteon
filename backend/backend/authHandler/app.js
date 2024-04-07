@@ -279,36 +279,6 @@ module.exports = {
             dob: parseDate(user_dob)
         }
 
-        let response = await triggerLambda(
-            "dev-sbn-infocard-get-personnel-registered", 
-            "RequestResponse", 
-            {   
-                body: JSON.stringify(payload)
-            }
-        )
-
-        console.log("==> Get Personnel Lambda trigger: ", response)
-
-        response = JSON.parse(response.Payload)
-
-        // check if user is registered
-        if (response?.body?.statusCode === 200) {
-            return {
-                statusCode: 200,
-                headers: {
-                    'Access-Control-Expose-Headers': 'Access-Control-Allow-Origin',
-                    'Access-Control-Allow-Credentials': true,
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: JSON.stringify({
-                    statusCode: 200,
-                    sessionId: sessionId,
-                    message: "User registered",
-                    payload: payload
-                })
-            }
-        }
         return {
             statusCode: 200,
             headers: {
@@ -318,9 +288,9 @@ module.exports = {
                 'Access-Control-Allow-Origin': '*',
             },
             body: JSON.stringify({
-                statusCode: 404,
+                statusCode: 200,
                 sessionId: sessionId,
-                message: "User not registered",
+                message: "User registered",
                 payload: payload
             })
         }

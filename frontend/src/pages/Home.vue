@@ -3,7 +3,7 @@
         fill-height
         fluid
         class="d-flex align-center justify-center"
-        style="background-color: #F4F4F8;"
+        
 
     >
         <v-row>
@@ -47,10 +47,19 @@
     </v-container>
 </template>
 
+<style>
+
+.bg-image{
+    background-image: url("@/assets/background.jpg");
+    background-size: cover;
+}
+
+</style>
 
 <script>
 import HeroSection from '@/components/heroSection/HeroSection.vue'
 import Avatar from "@/assets/splashArt.png"
+import background from "@/assets/backgroun.jpg"
 
 import {
     retrieveSingpassAuthUrl
@@ -66,7 +75,8 @@ export default {
     },
     data() {
         return {
-            avatar: Avatar
+            avatar: Avatar,
+            background: background
 
 
         }

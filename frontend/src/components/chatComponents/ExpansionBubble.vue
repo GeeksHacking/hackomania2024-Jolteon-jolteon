@@ -9,10 +9,11 @@
 
     >
         <v-card-title class="text-subtitle-1">{{ data.message }}</v-card-title>
-        <v-card-text>
+        <v-card-text class="pa-0">
             <v-expansion-panels
                 variant="accordion"
                 flat
+                class="px-3 py-2"
                 
             >
                 <v-expansion-panel

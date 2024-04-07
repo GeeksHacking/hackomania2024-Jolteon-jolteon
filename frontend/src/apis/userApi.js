@@ -75,12 +75,15 @@ const registerUser = async (sessionId, formData) => {
 
 const sendMessage = async (sessionId, message) => {
 
-    
+    const response = await axiosInstance.post("/sendMessage", {
+        sessionId: sessionId,
+        message: message
+    })
+
 }
 
 export { 
     getUserRegistered,
     getMyInfoUser,
     registerUser,
-    getUserCard
  }

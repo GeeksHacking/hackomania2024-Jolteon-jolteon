@@ -259,7 +259,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/de49bb0c2c22196249d6f766e8400abd
+      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/39592ba58bcd305ffc9e72276852782a
       Handler: app.getAuthURLEndpoint
       Role:
         Fn::GetAtt:
@@ -306,7 +306,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/de49bb0c2c22196249d6f766e8400abd
+      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/39592ba58bcd305ffc9e72276852782a
       Handler: app.verifySessionId
       Role:
         Fn::GetAtt:
@@ -353,7 +353,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/de49bb0c2c22196249d6f766e8400abd
+      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/39592ba58bcd305ffc9e72276852782a
       Handler: app.redirectAuthURL
       Role:
         Fn::GetAtt:
@@ -399,7 +399,7 @@ Resources:
       Timeout: 20
       Runtime: nodejs18.x
       MemorySize: 256
-      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/de49bb0c2c22196249d6f766e8400abd
+      CodeUri: s3://dev-jolteon/cloudformation/jolteon/dev/39592ba58bcd305ffc9e72276852782a
       Handler: app.getUserInfo
       Role:
         Fn::GetAtt:

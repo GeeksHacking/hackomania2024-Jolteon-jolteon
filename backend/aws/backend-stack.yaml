@@ -373,13 +373,11 @@ Resources:
     Properties:
       FunctionName: !Join ["-", [!Ref Environment, !Ref AppName, "chat-handler"]]
       Description: Main handler for the chat functions
-      Timeout: 20
-      Runtime: nodejs18.x
-      CodeUri: ../backend/chatHandler
-      Handler: app.mainHandler
+      Timeout: 30
+      MemorySize: 2048
+      ImageUri: 353942955042.dkr.ecr.ap-southeast-1.amazonaws.com/infocardgeneration:latest
+      PackageType: Image
       Role: !GetAtt ApplicationMainHandlerRole.Arn
-      Layers:
-        - !Ref SharedLayerArn
       Environment:
         Variables:
           AWS: true
@@ -389,6 +387,7 @@ Resources:
           REDIRECT_URI: !Ref ApplicationRedirectURL
           FRONTEND_URL: !Ref ApplicationFrontendURL
           AUTH_TABLENAME: !Ref ApplicationAuthorizationTableName
+          ApplicationPersonnelImageBucket: !Ref ApplicationPersonnelImageBucket
       Events:
         GetPersonnelRegisteredEndpoint:
           Type: "Api"
@@ -396,3 +395,4 @@ Resources:
             RestApiId: !Ref ApplicationAPIGateway
             Path: /api/send-message
             Method: POST
+  

@@ -1,14 +1,11 @@
 <template>
   <v-app>
 
-    <v-app-bar
-      flat
-    >
-      <Navbar />
-    </v-app-bar>
+    
     <v-main
-      class="d-flex"
+      class="d-flex bg-image"
     >
+      
       <router-view
 
       ></router-view>

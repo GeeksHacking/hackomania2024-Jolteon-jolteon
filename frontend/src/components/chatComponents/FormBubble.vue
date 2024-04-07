@@ -10,11 +10,11 @@
 
     >
         <v-card-title class="text-subtitle-1">{{ data.message }}</v-card-title>
-        <v-card-text >
+        <v-card-text class="pa-0">
             <v-list-item
                 v-for="(field, index) in data.data"
                 :key="index"
-                class="px-0"
+                class=""
             >
                 <v-text-field
                     v-if="field.field == 'TEXT'"

@@ -7,10 +7,10 @@
         flat
 
     >
-        <v-card-text>
-            <span
-                class="font-weight-medium text-subtitle-1"
-                :class="data.user === 'bot' ? 'text-grey-darken-2' : 'text-black'"
+        <v-card-text class="pa-0">
+            <span   
+                class="font-weight-medium text-subtitle-1 px-4 py-2"
+                :class="data.user === 'bot' ? 'text-black' : 'text-black'"
             >{{ data.message }}</span>
         </v-card-text>
     </v-card>
