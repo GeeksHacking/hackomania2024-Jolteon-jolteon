@@ -18,4 +18,4 @@
 
 ## Deployment
 Jolteon is currently under development but will soon be available at the following link:
-- Deployed Site: [Link to the site]()
+- Deployed Site: [Link to the site](https://d1wtufjabrff08.cloudfront.net)
