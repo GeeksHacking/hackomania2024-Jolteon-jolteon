@@ -9,9 +9,7 @@ from typing import List
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.pydantic_v1 import BaseModel, Field
 
-class Response(BaseModel):
-    """Final response to the question being asked"""
-    answer: str = Field(description="The final answer to respond to the user")
+
 
 def get_secrets(name):
     ssm = boto3.client('ssm', region_name='ap-southeast-1')  # replace 'us-west-2' with your AWS region
@@ -33,7 +31,7 @@ def lambda_handler(event, context):
         api_key=os.getenv("OPENAI_API_KEY"),
     )
 
-    chat = chat.bind_functions([Response])
+    # chat = chat.bind_functions([])
     search = TavilySearchAPIWrapper()
     tavily_tool = TavilySearchResults(
         api_wrapper=search,
@@ -53,16 +51,16 @@ def lambda_handler(event, context):
         verbose=False
     )
 
-    bot_response = agent_chain.invoke(query, return_only_outputs=True)
+    bot_response = agent_chain.invoke(query)
 
     # parse the response
-    bot_response = json.loads(bot_response)
-    bot_response = bot_response["answer"]
+    bot_response = json.dumps(bot_response)
+    
 
 
     
 
     return {
         "statusCode": 200,
-        "body": json.dumps(bot_response)
+        "body": bot_response
     }

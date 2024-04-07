@@ -226,7 +226,7 @@ export default {
             this.curr_message = ''
             this.all_messages = []
             setTimeout(() => {
-                this.all_messages = [...tjhis.starter_message]
+                this.all_messages = [...this.starter_message]
             }, 1200);
         },
 
